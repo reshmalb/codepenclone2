@@ -1,18 +1,47 @@
-import React from 'react'
-import 'codemirror/theme/material.css'
+import React, { useState } from 'react'
 import 'codemirror/lib/codemirror.css'
-import 'codemirror/mode/xml/xml';
+import 'codemirror/theme/material.css'
+import 'codemirror/mode/xml/xml'
 import 'codemirror/mode/javascript/javascript'
-import { Controlled as ControlledEditor } from 'react-codemirror2';
-export function  Editor  ({props})  {
+import 'codemirror/mode/css/css'
+import { Controlled as ControlledEditor } from 'react-codemirror2'
+export const  Editor = (props)=>  {
 
-    const {language,
+    const { language,
             displayName,
             value,
             onChange}=props;
+  const [open,setOpen]=useState(false);
+
+   const handleChange=(editor,value,data)=>{
+    onChange(value)
+   }
+
   return (
-    <div>
-        Editor
+    <div className={`editor-container ${open ?'':'collapsed'}`}>
+        <div className='editor-title'>
+            {displayName}
+
+            <button onClick={()=>setOpen(prevopen=>!prevopen)}>o/c</button>
+        </div>
+        <ControlledEditor
+            onBeforeChange={handleChange}
+            value={value}
+            className='code-mirror-wrapper'
+            options={{
+                lineWrapping: true,
+                lint: true,
+                mode: language,
+                theme: 'material',
+                lineNumbers: true
+
+            }}
+        
+        
+        >
+
+        </ControlledEditor>
+      
       
     </div>
   )
